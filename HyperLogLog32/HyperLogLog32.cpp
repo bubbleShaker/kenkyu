@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <bitset>
 #include <set>
+#include <limits>
+#include <iomanip>
 
 int n;
 std::vector<unsigned int> S;
@@ -14,14 +16,14 @@ double HyperLogLog();
 int true_count(std::vector<unsigned int> S);
 unsigned int h(unsigned int x);
 unsigned int powi(unsigned int a,int b);
-long long powll(long long a,int b);
 unsigned int calc_idx(unsigned int x,int p);
-unsigned int calc_x(unsigned int x,int p);
+unsigned int calc_w(unsigned int x,int p);
 int rho(unsigned int w);
 double LINEARCOUNTING(int m,int V);
 
 int main(){
   double E=HyperLogLog();
+  std::cout<<std::fixed<<std::setprecision(0);
   std::cout<<"推定カーディナリティ数:";
   std::cout<<E<<'\n';
   std::cout<<"実際の値:";
@@ -53,16 +55,24 @@ double HyperLogLog(){
   for(unsigned int v:S){ // for all v ∊ S do
     unsigned int x=h(v);
     unsigned int idx=calc_idx(x,p);
-    unsigned int w=calc_x(x,p);
+    unsigned int w=calc_w(x,p);
     M[idx]=std::max(M[idx],rho(w));
   }
   //Phase2: Result computation.
   double ret=0;
   for(int i=0;i<m;i++){
-    ret+=1/powi(2,M[i]);
+    ret+=1/std::pow(2,M[i]);
   }
   ret=1/ret;
-  double E=a_16*m*m*ret;
+  double E;
+  if(m>=128){
+    E=a_m*m*m*ret;
+  }else{
+    E=a_16*m*m*ret;
+  }
+  //一旦補完無しでEを見てみる
+  return E;
+  
   if(E<=(5*m)/(double)2){
     int V=0; // Let V be the number of register equal to 0.
     for(int i=0;i<m;i++){
@@ -78,7 +88,11 @@ double HyperLogLog(){
   }else if(E<=std::pow(2,32)/30){
     E=E;
   }else{
-    E=-pow(2,32)*std::log2(1-E/std::pow(2,32));
+    if(1-E/std::pow(2,32)>0){
+      E=-pow(2,32)*std::log2(1-E/std::pow(2,32));
+    }else{
+      E=-1;
+    }
   }
   return E;
 }
@@ -115,14 +129,6 @@ unsigned int powi(unsigned int a,int b){
   return ret;
 };
 
-long long powll(long long a,int b){
-  long long ret=1;
-  for(int i=0;i<b;i++){
-    ret*=a;
-  }
-  return ret;
-};
-
 unsigned int calc_idx(unsigned int x,int p){
   std::bitset<32> bitset(x);
   unsigned int ret=0;
@@ -135,7 +141,7 @@ unsigned int calc_idx(unsigned int x,int p){
   return ret;
 }
 
-unsigned int calc_x(unsigned int x,int p){
+unsigned int calc_w(unsigned int x,int p){
   std::bitset<32> bitset(x);
   unsigned int ret=0;
   const int BIT=32;
