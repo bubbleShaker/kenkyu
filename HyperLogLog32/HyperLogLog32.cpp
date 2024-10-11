@@ -41,7 +41,7 @@ void input(){
 double HyperLogLog(){
   //Require:
   int p=16;
-  int m=powi(2,p);
+  double m=std::pow(2,p);
   //Phase0: Initialization.
   double a_16=0.673;
   double a_32=0.697;
@@ -64,7 +64,7 @@ double HyperLogLog(){
   ret=1/ret;
   double E=a_16*m*m*ret;
   if(E<=(5*m)/(double)2){
-    int V; // Let V be the number of register equal to 0.
+    int V=0; // Let V be the number of register equal to 0.
     for(int i=0;i<m;i++){
       if(M[i]==0){
         V++;
@@ -124,9 +124,9 @@ long long powll(long long a,int b){
 };
 
 unsigned int calc_idx(unsigned int x,int p){
-  std::bitset<7> bitset(x);
+  std::bitset<32> bitset(x);
   unsigned int ret=0;
-  const int BIT=7;
+  const int BIT=32;
   for(int i=BIT-p;i<BIT;i++){
     if(bitset[i]){
       ret+=powi(2,i-(BIT-p));
