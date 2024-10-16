@@ -90,6 +90,7 @@ double HyperLogLog(){
     E=E;
   }else{
     if(1-E/std::pow(2,32)>0){
+      std::cout<<"test"<<'\n';
       E=-pow(2,32)*std::log2(1-E/std::pow(2,32));
     }else{
       E=-1;
