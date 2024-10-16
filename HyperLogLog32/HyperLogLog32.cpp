@@ -24,7 +24,7 @@ double LINEARCOUNTING(int m,int V);
 
 int main(){
   double E=HyperLogLog();
-  std::cout<<std::fixed<<std::setprecision(0);
+  std::cout<<std::fixed<<std::setprecision(2);
   std::cout<<"推定カーディナリティ数:";
   std::cout<<E<<'\n';
   std::cout<<"実際の値:";
@@ -43,7 +43,7 @@ void input(){
 
 double HyperLogLog(){
   //Require:
-  int p=4;
+  int p=16;
   double m=std::pow(2,p);
   //Phase0: Initialization.
   double a_16=0.673;
@@ -73,6 +73,7 @@ double HyperLogLog(){
   }else{
     E=a_16*m*m*ret;
   }
+  return E;//補正なしで返してみる
   
   if(E<=(5*m)/(double)2){
     int V=0; // Let V be the number of register equal to 0.
