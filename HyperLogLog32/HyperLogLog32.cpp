@@ -7,6 +7,7 @@
 #include <set>
 #include <limits>
 #include <iomanip>
+#include "MurmurHash3.h"
 
 int n;
 std::vector<unsigned int> S;
@@ -42,7 +43,7 @@ void input(){
 
 double HyperLogLog(){
   //Require:
-  int p=16;
+  int p=4;
   double m=std::pow(2,p);
   //Phase0: Initialization.
   double a_16=0.673;
@@ -52,8 +53,10 @@ double HyperLogLog(){
   std::vector<int> M(m); //Initialize m registers M[0] to M[m-1] to 0
   //Phase1: Aggregation
   input(); //データの受け取り
+  unsigned int seed=12345;
   for(unsigned int v:S){ // for all v ∊ S do
-    unsigned int x=h(v);
+    unsigned int x;
+    MurmurHash3_x86_32(&v,4,seed,&x);
     unsigned int idx=calc_idx(x,p);
     unsigned int w=calc_w(x,p);
     M[idx]=std::max(M[idx],rho(w));
@@ -70,8 +73,6 @@ double HyperLogLog(){
   }else{
     E=a_16*m*m*ret;
   }
-  //一旦補完無しでEを見てみる
-  return E;
   
   if(E<=(5*m)/(double)2){
     int V=0; // Let V be the number of register equal to 0.
