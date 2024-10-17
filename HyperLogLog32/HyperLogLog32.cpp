@@ -8,6 +8,8 @@
 #include <limits>
 #include <iomanip>
 #include "MurmurHash3.h"
+//https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
+//https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.h
 
 int n;
 std::vector<unsigned int> S;

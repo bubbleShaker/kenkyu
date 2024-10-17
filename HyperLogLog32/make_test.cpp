@@ -12,7 +12,7 @@ uint32_t get_rand() {
 //参考:https://rkd3.dev/post/random-range-cpp/
 
 int main(){
-  int n=80000; //ストリームの要素数
+  int n=100000000; //ストリームの要素数
   std::cout<<n<<'\n';
   for(int i=0;i<n;i++){
     std::cout<<get_rand()<<' ';
