@@ -43,7 +43,7 @@ void input(){
 
 double HyperLogLog(){
   //Require:
-  int p=16;
+  int p=14;
   double m=std::pow(2,p);
   //Phase0: Initialization.
   double a_16=0.673;
@@ -73,7 +73,7 @@ double HyperLogLog(){
   }else{
     E=a_16*m*m*ret;
   }
-  return E;//補正なしで返してみる
+  // return E;//補正なしで返してみる
   
   if(E<=(5*m)/(double)2){
     int V=0; // Let V be the number of register equal to 0.
@@ -154,13 +154,12 @@ unsigned int calc_w(unsigned int x,int p){
     }
   }
   return ret;
-  
 }
 
 int rho(unsigned int w){
-  std::bitset<32> bitset(w);
+  std::bitset<18> bitset(w);//p=14のため、wのビット長は18
   int ret=1;
-  for(int i=31;i>=0;i--){
+  for(int i=17;i>=0;i--){
     if(bitset[i]){
       break;
     }else{

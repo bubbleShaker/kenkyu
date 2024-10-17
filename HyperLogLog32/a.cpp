@@ -9,10 +9,10 @@ int powi(int a,int b){
   return ret;
 };
 
-int calc_idx(int x,int p){
-  std::bitset<7> bitset(x);
-  int ret=0;
-  const int BIT=7;
+unsigned int calc_idx(int p){
+  std::bitset<10> bitset("1010111111");
+  unsigned int ret=0;
+  const int BIT=10;
   for(int i=BIT-p;i<BIT;i++){
     if(bitset[i]){
       ret+=powi(2,i-(BIT-p));
@@ -21,8 +21,34 @@ int calc_idx(int x,int p){
   return ret;
 }
 
+unsigned int calc_w(int p){
+  std::bitset<10> bitset("1010111111");
+  unsigned int ret=0;
+  const int BIT=10;
+  for(int i=0;i<BIT-p;i++){
+    if(bitset[i]){
+      ret+=powi(2,i);
+    }
+  }
+  return ret;
+}
+
+int rho(){
+  std::bitset<10> bitset("0000000000");
+  int ret=1;
+  for(int i=9;i>=0;i--){
+    if(bitset[i]){
+      break;
+    }else{
+      ret++;
+    }
+  }
+  return ret;
+}
+
 int main(){
-  int idx=calc_idx(83,3);
-  std::cout<<idx<<'\n';
+  std::cout<<calc_idx(5)<<'\n';
+  std::cout<<calc_w(5)<<'\n';
+  std::cout<<rho()<<'\n';
   return 0;
 }
