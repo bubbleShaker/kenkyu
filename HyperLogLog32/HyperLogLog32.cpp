@@ -15,7 +15,6 @@ std::vector<unsigned int> S;
 void input();
 double HyperLogLog();
 int true_count(std::vector<unsigned int> S);
-unsigned int h(unsigned int x);
 unsigned int powi(unsigned int a,int b);
 unsigned int calc_idx(unsigned int x,int p);
 unsigned int calc_w(unsigned int x,int p);
@@ -106,22 +105,6 @@ int true_count(std::vector<unsigned int> S){
     set.insert(v);
   }
   return set.size();
-}
-
-unsigned int h(unsigned int x){
-  // 固定シードとして使用する大きな素数
-  const unsigned int seed=0x9e3779b9;
-  // x にシードを掛け合わせる
-  x^=seed;
-  // xorshift アルゴリズム
-  x^=x >> 17;
-  x*=0xed5ad4bb;
-  x^=x >> 11;
-  x*=0xac4c1b51;
-  x^=x >> 15;
-  x*=0x31848bab;
-  x^=x >> 14;
-  return x;
 }
 
 unsigned int powi(unsigned int a,int b){
