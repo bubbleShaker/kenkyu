@@ -72,7 +72,7 @@ double HyperLogLog(){
   }else{
     E=a_16*m*m*ret;
   }
-  // return E;//補正なしで返してみる
+  return E;//補正なしで返してみる
   
   if(E<=(5*m)/(double)2){
     int V=0; // Let V be the number of register equal to 0.
